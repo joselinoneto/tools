@@ -22,9 +22,8 @@ public class FileStorage {
     
     public func getLocalFile(fileName: String) -> URL? {
         let filePath = folderUrl?.appendingPathComponent("\(fileName)\(fileExtension)")
-        let assetPath = assetsPath?.appendingPathComponent("\(fileName)\(fileExtension)")
         guard let filePathString: String = filePath?.path else { return nil }
-        return FileManager.default.fileExists(atPath: filePathString) ? filePath : assetPath
+        return FileManager.default.fileExists(atPath: filePathString) ? filePath : nil
     }
     
     public func saveRemoteFile(imageUrl: URL?, fileName: String?) async throws {
