@@ -18,21 +18,27 @@ public class DafaultsStorage {
         userDefaults.integer(forKey: key.rawValue).defaultValue
     }
     
-    public static func getStringValue(key: DefaultKey) -> String? {
-        userDefaults.string(forKey: key.rawValue)
-    }
+    //public static func getStringValue(key: DefaultKey) -> String? {
+        //    userDefaults.string(forKey: key.rawValue)
+    //}
     
     public static func setIntValue(_ value: Int, key: DefaultKey) {
         userDefaults.set(value, forKey: key.rawValue)
     }
     
-    public static func setStringValue(_ value: String, key: DefaultKey) {
-        userDefaults.set(value, forKey: key.rawValue)
+    public static func clearUserDefatuls() {
+        let domain = Bundle.main.bundleIdentifier!
+        userDefaults.removePersistentDomain(forName: domain)
+        userDefaults.synchronize()
     }
+    
+    //public static func setStringValue(_ value: String, key: DefaultKey) {
+    //    userDefaults.set(value, forKey: key.rawValue)
+    //}
 }
 
 private extension Int {
     var defaultValue: Int {
-        return self <= 0 ? 1 : self
+        return self <= 0 ? 2 : self
     }
 }

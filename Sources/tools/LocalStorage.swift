@@ -11,14 +11,14 @@ public class FileStorage {
     let fileExtension: String = ".jpg"
     public static let shared: FileStorage = FileStorage()
     
-    private var folderUrl: URL? {
+    public var folderUrl: URL? {
         //FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.zeneto.astronomia-app")
         try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
     }
     
-    private var assetsPath: URL? {
-        FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-    }
+    //private var assetsPath: URL? {
+    //    FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+    //}
     
     public func getLocalFile(fileName: String) -> URL? {
         let filePath = folderUrl?.appendingPathComponent("\(fileName)\(fileExtension)")
@@ -34,11 +34,7 @@ public class FileStorage {
         if FileManager.default.fileExists(atPath: fileURL.path) {
             return 
         }
-        do {
-            let data = try await URLSession.shared.download(from: imageUrl)
-            try FileManager.default.moveItem(atPath: data.0.path, toPath: fileURL.path)
-        } catch {
-            // TODO: Some log
-        }
+        let data = try await URLSession.shared.download(from: imageUrl)
+        try FileManager.default.moveItem(atPath: data.0.path, toPath: fileURL.path)
     }
 }
