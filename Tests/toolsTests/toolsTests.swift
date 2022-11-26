@@ -6,8 +6,8 @@ final class toolsTests: XCTestCase {
         let value: String = "value"
         let key: String = "key"
         
-        XCTAssertThrowsError(try KeychainStorage.shared.set(newValue: value, forKey: key))
-        XCTAssertThrowsError(try KeychainStorage.shared.getValueForKey(key))
+        XCTAssertNoThrow(try KeychainStorage.shared.set(newValue: value, forKey: key))
+        XCTAssertNoThrow(try KeychainStorage.shared.getValueForKey(key))
         
         // TODO: set entitlement for keychain in spm
         //let valueRestore: String? = try KeychainStorage.shared.getValueForKey(key)
@@ -15,7 +15,7 @@ final class toolsTests: XCTestCase {
     }
     
     func testClearKeyChainStorage() throws {
-        XCTAssertThrowsError(try KeychainStorage.shared.clearStorage())
+        XCTAssertNoThrow(try KeychainStorage.shared.clearStorage())
     }
     
     func testLocalStorage() async throws {
