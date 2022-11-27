@@ -8,10 +8,6 @@ final class toolsTests: XCTestCase {
         
         XCTAssertNoThrow(try KeychainStorage.shared.set(newValue: value, forKey: key))
         XCTAssertNoThrow(try KeychainStorage.shared.getValueForKey(key))
-        
-        // TODO: set entitlement for keychain in spm
-        //let valueRestore: String? = try KeychainStorage.shared.getValueForKey(key)
-        //XCTAssertEqual(value, valueRestore)
     }
     
     func testClearKeyChainStorage() throws {
@@ -46,5 +42,10 @@ final class toolsTests: XCTestCase {
         let testIntValue: Int = DafaultsStorage.getIntValue(key: .numberColumns)
         
         XCTAssertEqual(intValue, testIntValue)
+    }
+    
+    func testConfigStorage()  {
+        let config = ConfigLoader.shared.appConfig
+        XCTAssertNotNil(config?.apiUrl)
     }
 }
