@@ -9,26 +9,17 @@ import Foundation
 
 public class ConfigLoader {
     public static let shared: ConfigLoader = ConfigLoader()
-    public let appConfig: AppConfiguration
+    public let appConfig: AppConfiguration?
 
     private init() {
         appConfig = ConfigLoader.parseFile()
     }
 
-    private static func parseFile() -> AppConfiguration {
-        let fileName: String = "Config.plist"
-        guard let filePath = Bundle.main.path(forResource: fileName, ofType: nil),
-            let fileData = FileManager.default.contents(atPath: filePath)
-        else {
-            fatalError("Config file '\(fileName)' not loadable!")
-        }
-
-        do {
-            let config = try PropertyListDecoder().decode(AppConfiguration.self, from: fileData)
-            return config
-        } catch {
-            fatalError("Configuration not decodable from '\(fileName)': \(error)")
-        }
+    private static func parseFile() -> AppConfiguration? {
+        guard let filePath = Bundle.module.url(forResource: "Config", withExtension: "plist") else { return nil }
+        guard let fileData: Data = try? String(contentsOf: filePath).data(using: .utf8) else { return nil }
+        let config = try? PropertyListDecoder().decode(AppConfiguration.self, from: fileData)
+        return config
     }
 }
 
