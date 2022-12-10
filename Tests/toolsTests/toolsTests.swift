@@ -2,6 +2,36 @@ import XCTest
 @testable import tools
 
 final class toolsTests: XCTestCase {
+    let xml = """
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>token</key>
+<string>TOKEN_KEY_STORAGE</string>
+<key>config</key>
+<string>Dev</string>
+<key>api-url</key>
+<string>https://zeneto.app/</string>
+</dict>
+</plist>
+"""
+    
+    let xmlError = """
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>token</key>
+<string>TOKEN_KEY_STORAGE</string>
+<key>config</key>
+<string>Dev</string>
+<key>api-url</key
+<string>https://zeneto.app/</string>
+</dict>
+</plist>
+"""
+
     func testKeyChainStorage() throws {
         let value: String = "value"
         let key: String = "key"
@@ -46,5 +76,30 @@ final class toolsTests: XCTestCase {
         let testIntValue: Int = DafaultsStorage.getIntValue(key: .numberColumns)
         
         XCTAssertEqual(intValue, testIntValue)
+    }
+    
+    func testConfigLoader() {
+        
+        let data: Data? = xml.data(using: .utf8)
+        let folderUrl = FileStorage.shared.folderUrl?.appendingPathComponent("Config.plist")
+        try? data?.write(to: folderUrl!)
+        
+        let config = ConfigLoader(fileName: "Config.plist")
+        let url = config.appConfig.apiUrl
+        XCTAssertNotEqual("", url)
+        
+        let configError = ConfigLoader(fileName: "ConfigError.plist")
+        let urlError = configError.appConfig.apiUrl
+        XCTAssertEqual("", urlError)
+    }
+    
+    func testConfigLoaderError() {
+        let data: Data? = xmlError.data(using: .utf8)
+        let folderUrl = FileStorage.shared.folderUrl?.appendingPathComponent("ConfigParseError.plist")
+        try? data?.write(to: folderUrl!)
+        
+        let config = ConfigLoader(fileName: "ConfigParseError.plist")
+        let url = config.appConfig.apiUrl
+        XCTAssertEqual("", url)
     }
 }

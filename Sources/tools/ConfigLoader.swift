@@ -8,26 +8,31 @@
 import Foundation
 
 public class ConfigLoader {
-    public static let shared: ConfigLoader = ConfigLoader()
     public let appConfig: AppConfiguration
 
-    private init() {
-        appConfig = ConfigLoader.parseFile()
+    public init(fileName: String) {
+        appConfig = ConfigLoader.parseFile(fileName: fileName)
     }
 
-    private static func parseFile() -> AppConfiguration {
-        let fileName: String = "Config.plist"
+    private static func parseFile(fileName: String) -> AppConfiguration {
         guard let filePath = Bundle.main.path(forResource: fileName, ofType: nil),
             let fileData = FileManager.default.contents(atPath: filePath)
         else {
-            fatalError("Config file '\(fileName)' not loadable!")
+            let localPath = FileStorage.shared.folderUrl?.appendingPathComponent(fileName)
+            let localFileData = try? String.init(contentsOf: localPath!, encoding: .utf8)
+            let content = localFileData?.data(using: .utf8)
+            return parseData(data: content)
         }
-
+        
+        return parseData(data: fileData)
+    }
+    
+    private static func parseData(data: Data?) -> AppConfiguration {
+        guard let data = data else { return AppConfiguration.empty }
         do {
-            let config = try PropertyListDecoder().decode(AppConfiguration.self, from: fileData)
-            return config
+            return try PropertyListDecoder().decode(AppConfiguration.self, from: data)
         } catch {
-            fatalError("Configuration not decodable from '\(fileName)': \(error)")
+            return AppConfiguration.empty
         }
     }
 }
@@ -44,6 +49,17 @@ public struct AppConfiguration: Decodable {
         case testFlags
         case token
     }
+    
+    init(config: String, apiUrl: String, testFlags: TestFlags?, token: String) {
+        self.config = config
+        self.apiUrl = apiUrl
+        self.testFlags = testFlags
+        self.token = token
+    }
+    
+    public static var empty: AppConfiguration = {
+        AppConfiguration(config: "", apiUrl: "", testFlags: nil, token: "")
+    }()
 }
 
 public struct TestFlags: Decodable {
