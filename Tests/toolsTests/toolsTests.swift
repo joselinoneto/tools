@@ -80,16 +80,16 @@ final class toolsTests: XCTestCase {
         let folderUrl = FileStorage.shared.folderUrl?.appendingPathComponent("Config.plist")
         try? data?.write(to: folderUrl!)
         
-        let config = ConfigLoader(fileName: "Config.plist")
+        let config = ConfigLoader.shared
         let url = config.appConfig.apiUrl
         XCTAssertNotEqual("", url)
-        
-        let configError = ConfigLoader(fileName: "ConfigError.plist")
-        let urlError = configError.appConfig.apiUrl
-        XCTAssertEqual("", urlError)
     }
     
     func testConfigLoaderError() {
+        let configError = ConfigLoader(fileName: "ConfigError.plist")
+        let urlError = configError.appConfig.apiUrl
+        XCTAssertEqual("", urlError)
+        
         let data: Data? = xmlError.data(using: .utf8)
         let folderUrl = FileStorage.shared.folderUrl?.appendingPathComponent("ConfigParseError.plist")
         try? data?.write(to: folderUrl!)

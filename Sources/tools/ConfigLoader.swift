@@ -9,6 +9,7 @@ import Foundation
 
 public class ConfigLoader {
     public let appConfig: AppConfiguration
+    public static let shared: ConfigLoader = ConfigLoader(fileName: "Config.plist")
 
     public init(fileName: String) {
         appConfig = ConfigLoader.parseFile(fileName: fileName)
