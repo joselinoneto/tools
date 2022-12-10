@@ -17,14 +17,14 @@ public class KeychainStorage {
     public static var shared: KeychainStorage = KeychainStorage()
 
     public func getValueForKey(_ key: String) throws -> String? {
-        try? keyChainWrapper.getString(key)
+        try keyChainWrapper.getString(key)
     }
 
     public func set(newValue: String, forKey: String) throws {
-        try? keyChainWrapper.set(newValue, key: forKey)
+        try keyChainWrapper.set(newValue, key: forKey)
     }
 
     public func clearStorage() throws {
-        try? keyChainWrapper.removeAll()
+        try keyChainWrapper.removeAll()
     }
 }
