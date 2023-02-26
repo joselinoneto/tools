@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol PropertyListValue {}
+public protocol PropertyListValue {}
 
 extension Data: PropertyListValue {}
 extension String: PropertyListValue {}
