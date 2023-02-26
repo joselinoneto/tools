@@ -63,15 +63,15 @@ final class toolsTests: XCTestCase {
     }
     
     func testDefaultsStorage()  {
-        DafaultsStorage.clearUserDefatuls()
-        let testIntValue2: Int = DafaultsStorage.getIntValue(key: .numberColumns)
-        XCTAssertEqual(2, testIntValue2)
+        let testValue: Int = 100
+
+        var storage = DafaultsStorage()
+        storage.numberColumns = testValue
         
-        let intValue: Int = Int.random(in: 1...100)
-        DafaultsStorage.setIntValue(intValue, key: .numberColumns)
-        let testIntValue: Int = DafaultsStorage.getIntValue(key: .numberColumns)
-        
-        XCTAssertEqual(intValue, testIntValue)
+        let newStorage = DafaultsStorage()
+        let value: Int = newStorage.numberColumns ?? 0
+
+        XCTAssertEqual(value, testValue)
     }
     
     func testConfigLoader() {
