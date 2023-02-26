@@ -18,4 +18,10 @@ public struct DafaultsStorage {
 
     @UserDefault(key: .isImageModeEnabled)
     var isImageModeEnabled: Bool?
+
+    public init() {
+        // Default Values
+        self.numberColumns = 2
+        self.isImageModeEnabled = false
+    }
 }
