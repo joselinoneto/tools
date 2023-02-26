@@ -7,12 +7,16 @@
 
 import Foundation
 
-struct Key: RawRepresentable {
-    let rawValue: String
+public struct Key: RawRepresentable {
+    public let rawValue: String
+
+    public init(rawValue: String) {
+        self.rawValue = rawValue
+    }
 }
 
 extension Key: ExpressibleByStringLiteral {
-    init(stringLiteral: String) {
+    public init(stringLiteral: String) {
         rawValue = stringLiteral
     }
 }

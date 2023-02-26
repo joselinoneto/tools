@@ -8,10 +8,10 @@
 import Foundation
 
 @propertyWrapper
-struct UserDefault<T: PropertyListValue> {
-    let key: Key
+public struct UserDefault<T: PropertyListValue> {
+    public let key: Key
 
-    var wrappedValue: T? {
+    public var wrappedValue: T? {
         get { UserDefaults.standard.value(forKey: key.rawValue) as? T }
         set { UserDefaults.standard.set(newValue, forKey: key.rawValue) }
     }

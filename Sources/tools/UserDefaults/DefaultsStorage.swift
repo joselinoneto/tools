@@ -14,10 +14,10 @@ extension Key {
 
 public struct DafaultsStorage {
     @UserDefault(key: .numberColumns)
-    var numberColumns: Int?
+    public var numberColumns: Int?
 
     @UserDefault(key: .isImageModeEnabled)
-    var isImageModeEnabled: Bool?
+    public var isImageModeEnabled: Bool?
 
     public init() {
         // Default Values
