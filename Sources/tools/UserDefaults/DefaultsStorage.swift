@@ -20,8 +20,5 @@ public struct DafaultsStorage {
     public var isImageModeEnabled: Bool?
 
     public init() {
-        // Default Values
-        self.numberColumns = 2
-        self.isImageModeEnabled = false
     }
 }
