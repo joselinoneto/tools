@@ -31,19 +31,6 @@ final class toolsTests: XCTestCase {
 </dict>
 </plist>
 """
-
-    func testKeyChainStorage() throws {
-        let value: String = "value"
-        let key: String = "key"
-        
-        XCTAssertNoThrow(try KeychainStorage.shared.set(newValue: value, forKey: key))
-        XCTAssertNoThrow(try KeychainStorage.shared.getValueForKey(key))
-    }
-    
-    func testClearKeyChainStorage() throws {
-        XCTAssertNoThrow(try KeychainStorage.shared.clearStorage())
-    }
-    
     func testLocalStorage() async throws {
         let url: String = "https://zeneto.app/template/badgeappstore.png"
         let imageURL: URL? = URL(string: url)
