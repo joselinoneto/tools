@@ -39,32 +39,17 @@ public class ConfigLoader {
 }
 
 public struct AppConfiguration: Decodable {
-    public let config: String
     public let apiUrl: String
-    public let testFlags: TestFlags?
-    public let token: String
     
     enum CodingKeys: String, CodingKey {
-        case config
         case apiUrl = "api-url"
-        case testFlags
-        case token
     }
     
-    init(config: String, apiUrl: String, testFlags: TestFlags?, token: String) {
-        self.config = config
+    init(apiUrl: String) {
         self.apiUrl = apiUrl
-        self.testFlags = testFlags
-        self.token = token
     }
     
     public static var empty: AppConfiguration = {
-        AppConfiguration(config: "", apiUrl: "", testFlags: nil, token: "")
+        AppConfiguration(apiUrl: "")
     }()
-}
-
-public struct TestFlags: Decodable {
-    public let resetData: Bool
-    public let noSplash: Bool
-    public let applyTestData: Bool
 }
