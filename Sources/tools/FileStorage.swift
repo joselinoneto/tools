@@ -12,8 +12,9 @@ public class FileStorage {
     public static let shared: FileStorage = FileStorage()
     
     public var folderUrl: URL? {
-        //FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.zeneto.astronomia-app")
-        try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        // FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.zeneto.astronomia-app")
+        // try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.app.zeneto.daily.apod")
     }
 
     public func getLocalFile(fileName: String) -> URL? {

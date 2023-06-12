@@ -50,13 +50,13 @@ final class toolsTests: XCTestCase {
     }
     
     func testDefaultsStorage()  {
-        let testValue: Int = 100
+        let testValue: Double = 100.0
 
-        var storage = DafaultsStorage()
-        storage.numberColumns = testValue
-        
-        let newStorage = DafaultsStorage()
-        let value: Int = newStorage.numberColumns ?? 0
+        let storage = DefaultsStorage.shared
+        storage.favoritesNumColumns = testValue
+
+        let newStorage = DefaultsStorage.shared
+        let value: Double = newStorage.favoritesNumColumns
 
         XCTAssertEqual(value, testValue)
     }
