@@ -8,17 +8,48 @@
 import Foundation
 
 extension Key {
-    static let numberColumns: Key = "number-columns-key"
+    static let favoritesNumberColumns: Key = "favorites-number-columns-key"
+    static let archiveNumberColumns: Key = "archive-number-columns-key"
     static let isImageModeEnabled: Key = "is-image-mode-enabled"
 }
 
-public struct DafaultsStorage {
-    @UserDefault(key: .numberColumns)
-    public var numberColumns: Int?
+public class DefaultsStorage: ObservableObject {
+    @UserDefault(key: .favoritesNumberColumns)
+    private var favoritesNumberColumns: Double?
+
+    @UserDefault(key: .archiveNumberColumns)
+    private var archiveNumberColumns: Double?
 
     @UserDefault(key: .isImageModeEnabled)
-    public var isImageModeEnabled: Bool?
+    private var imageModeEnabled: Bool?
 
-    public init() {
+    @Published public var favoritesNumColumns: Double {
+        didSet {
+            favoritesNumberColumns = favoritesNumColumns
+        }
+    }
+
+    @Published public var archiveNumColumns: Double {
+        didSet {
+            archiveNumberColumns = archiveNumColumns
+        }
+    }
+
+    @Published public var isImageModeEnabled: Bool {
+        didSet {
+            imageModeEnabled = isImageModeEnabled
+        }
+    }
+
+    public static let shared: DefaultsStorage = DefaultsStorage()
+
+    private init() {
+        let num = UserDefaults.standard.double(forKey: Key.favoritesNumberColumns.rawValue)
+        favoritesNumColumns = num > 0 ? num : 3
+
+        let archiveNum = UserDefaults.standard.double(forKey: Key.archiveNumberColumns.rawValue)
+        archiveNumColumns = archiveNum > 0 ? archiveNum : 2
+
+        isImageModeEnabled = UserDefaults.standard.bool(forKey: Key.isImageModeEnabled.rawValue)
     }
 }
