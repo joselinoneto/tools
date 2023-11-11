@@ -11,33 +11,57 @@ extension Key {
     static let favoritesNumberColumns: Key = "favorites-number-columns-key"
     static let archiveNumberColumns: Key = "archive-number-columns-key"
     static let isImageModeEnabled: Key = "is-image-mode-enabled"
+    static let searchKey: Key = "search-key"
+    static let detailsKey: Key = "details-key"
 }
 
-public class DefaultsStorage: ObservableObject {
+public class LocalDefaultStorage {
     @UserDefault(key: .favoritesNumberColumns)
-    private var favoritesNumberColumns: Double?
+    var favoritesNumberColumns: Double?
 
     @UserDefault(key: .archiveNumberColumns)
-    private var archiveNumberColumns: Double?
+    var archiveNumberColumns: Double?
 
     @UserDefault(key: .isImageModeEnabled)
-    private var imageModeEnabled: Bool?
+    var imageModeEnabled: Bool?
 
-    @Published public var favoritesNumColumns: Double {
+    @UserDefault(key: .searchKey)
+    var searchKey: String?
+
+    @UserDefault(key: .detailsKey)
+    var detailsKey: String?
+}
+
+@Observable
+public class DefaultsStorage {
+    let localDefaultStorage = LocalDefaultStorage()
+    public var favoritesNumColumns: Double {
         didSet {
-            favoritesNumberColumns = favoritesNumColumns
+            localDefaultStorage.favoritesNumberColumns = favoritesNumColumns
         }
     }
 
-    @Published public var archiveNumColumns: Double {
+    public var archiveNumColumns: Double {
         didSet {
-            archiveNumberColumns = archiveNumColumns
+            localDefaultStorage.archiveNumberColumns = archiveNumColumns
         }
     }
 
-    @Published public var isImageModeEnabled: Bool {
+    public var isImageModeEnabled: Bool {
         didSet {
-            imageModeEnabled = isImageModeEnabled
+            localDefaultStorage.imageModeEnabled = isImageModeEnabled
+        }
+    }
+
+    public var searchValue: String {
+        didSet {
+            localDefaultStorage.searchKey = searchValue
+        }
+    }
+
+    public var detailsValue: String {
+        didSet {
+            localDefaultStorage.detailsKey = detailsValue
         }
     }
 
@@ -51,5 +75,11 @@ public class DefaultsStorage: ObservableObject {
         archiveNumColumns = archiveNum > 0 ? archiveNum : 2
 
         isImageModeEnabled = UserDefaults.standard.bool(forKey: Key.isImageModeEnabled.rawValue)
+
+        let text = UserDefaults.standard.string(forKey: Key.searchKey.rawValue)
+        searchValue = text ?? ""
+
+        let key = UserDefaults.standard.string(forKey: Key.detailsKey.rawValue)
+        detailsValue = key ?? ""
     }
 }
