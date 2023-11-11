@@ -9,32 +9,20 @@ import Foundation
 
 public class ConfigLoader {
     public let appConfig: AppConfiguration
-    public static let shared: ConfigLoader = ConfigLoader(fileName: "Config.plist")
+    public static let shared: ConfigLoader = ConfigLoader()
 
-    public init(fileName: String) {
-        appConfig = ConfigLoader.parseFile(fileName: fileName)
-    }
+    private init() {
+        guard let bundle = Bundle.main.infoDictionary else {
+            appConfig = AppConfiguration.empty
+            return
+        }
 
-    private static func parseFile(fileName: String) -> AppConfiguration {
-        guard let filePath = Bundle.main.path(forResource: fileName, ofType: nil),
-            let fileData = FileManager.default.contents(atPath: filePath)
-        else {
-            let localPath = FileStorage.shared.folderUrl?.appendingPathComponent(fileName)
-            let localFileData = try? String.init(contentsOf: localPath!, encoding: .utf8)
-            let content = localFileData?.data(using: .utf8)
-            return parseData(data: content)
+        guard let url = bundle["API_URL"] as? String else {
+            appConfig = AppConfiguration.empty
+            return
         }
-        
-        return parseData(data: fileData)
-    }
-    
-    private static func parseData(data: Data?) -> AppConfiguration {
-        guard let data = data else { return AppConfiguration.empty }
-        do {
-            return try PropertyListDecoder().decode(AppConfiguration.self, from: data)
-        } catch {
-            return AppConfiguration.empty
-        }
+
+        appConfig = AppConfiguration(apiUrl: url)
     }
 }
 

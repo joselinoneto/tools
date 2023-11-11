@@ -15,49 +15,53 @@ extension Key {
     static let detailsKey: Key = "details-key"
 }
 
-public class DefaultsStorage: ObservableObject {
+public class LocalDefaultStorage {
     @UserDefault(key: .favoritesNumberColumns)
-    private var favoritesNumberColumns: Double?
+    var favoritesNumberColumns: Double?
 
     @UserDefault(key: .archiveNumberColumns)
-    private var archiveNumberColumns: Double?
+    var archiveNumberColumns: Double?
 
     @UserDefault(key: .isImageModeEnabled)
-    private var imageModeEnabled: Bool?
+    var imageModeEnabled: Bool?
 
     @UserDefault(key: .searchKey)
-    private var searchKey: String?
+    var searchKey: String?
 
     @UserDefault(key: .detailsKey)
-    private var detailsKey: String?
+    var detailsKey: String?
+}
 
-    @Published public var favoritesNumColumns: Double {
+@Observable
+public class DefaultsStorage {
+    let localDefaultStorage = LocalDefaultStorage()
+    public var favoritesNumColumns: Double {
         didSet {
-            favoritesNumberColumns = favoritesNumColumns
+            localDefaultStorage.favoritesNumberColumns = favoritesNumColumns
         }
     }
 
-    @Published public var archiveNumColumns: Double {
+    public var archiveNumColumns: Double {
         didSet {
-            archiveNumberColumns = archiveNumColumns
+            localDefaultStorage.archiveNumberColumns = archiveNumColumns
         }
     }
 
-    @Published public var isImageModeEnabled: Bool {
+    public var isImageModeEnabled: Bool {
         didSet {
-            imageModeEnabled = isImageModeEnabled
+            localDefaultStorage.imageModeEnabled = isImageModeEnabled
         }
     }
 
-    @Published public var searchValue: String {
+    public var searchValue: String {
         didSet {
-            searchKey = searchValue
+            localDefaultStorage.searchKey = searchValue
         }
     }
 
-    @Published public var detailsValue: String {
+    public var detailsValue: String {
         didSet {
-            detailsKey = detailsValue
+            localDefaultStorage.detailsKey = detailsValue
         }
     }
 
